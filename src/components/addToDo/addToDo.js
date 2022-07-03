@@ -10,15 +10,18 @@ const AddToDo = ({ todo, setTodo }) => {
   const [value, setValue] = useState("");
 
   const saveTodo = () => {
-    setTodo([
-      ...todo,
-      {
-        id: new Date().toISOString(),
-        title: value,
-        status: true,
-      },
-    ]);
-    setValue("");
+    if (value.trim() !== "") {
+      setTodo([
+        ...todo,
+        {
+          id: new Date().toISOString(),
+          title: value,
+          status: true,
+        },
+      ]);
+
+      setValue("");
+    }
   };
 
   return (

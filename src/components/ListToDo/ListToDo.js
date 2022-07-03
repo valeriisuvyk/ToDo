@@ -17,9 +17,6 @@ const ButtonEdit = styled.button`
   background-color: gray;
 `;
 
-const Div = styled.div`
-  display: flex;
-`;
 
 const ListToDo = ({ todo, setTodo }) => {
   const [edit, setEdit] = useState(null);
@@ -27,7 +24,7 @@ const ListToDo = ({ todo, setTodo }) => {
   const [value, setValue] = useState("");
 
   const deleteTodo = (id) => {
-    let newTodo = [...todo].filter((item) => item.id != id);
+    let newTodo = [...todo].filter((item) => item.id !== id);
     setTodo(newTodo);
   };
 
@@ -38,7 +35,7 @@ const ListToDo = ({ todo, setTodo }) => {
 
   const saveTodo = (id) => {
     let newTodo = [...todo].map((item) => {
-      if (item.id == id) {
+      if (item.id === id) {
         item.title = value;
       }
       return item;
@@ -51,7 +48,7 @@ const ListToDo = ({ todo, setTodo }) => {
     <div>
       {todo.map((item) => (
         <div key={item.id}>
-          {edit == item.id ? (
+          {edit === item.id ? (
             <div>
               <input value={value} onChange={(e) => setValue(e.target.value)} />
             </div>
@@ -59,7 +56,7 @@ const ListToDo = ({ todo, setTodo }) => {
             <div>{item.title}</div>
           )}
 
-          {edit == item.id ? (
+          {edit === item.id ? (
             <div>
               <ButtonSave onClick={() => saveTodo(item.id)}>
                 save changes
