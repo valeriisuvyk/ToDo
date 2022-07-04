@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect} from "react";
 import styled from "styled-components";
 
 const Button = styled.button`
@@ -17,16 +17,41 @@ const ButtonEdit = styled.button`
   background-color: gray;
 `;
 
+const ButtonClearStatisticEditedTodos = styled.button`
+
+`
+
+const P = styled.p``;
 
 const ListToDo = ({ todo, setTodo }) => {
   const [edit, setEdit] = useState(null);
 
   const [value, setValue] = useState("");
 
+  const [deletedTodos, setDeletedTodos] = useState(localStorage.getItem("deleted") || 0);
+
+  useEffect(() => {
+    localStorage.setItem("deleted", deletedTodos);
+  }, [deletedTodos]);
+
+  const [editedTodos, setEditedTodos] = useState(localStorage.getItem("edited") || 0);
+
+  useEffect(() => {
+    localStorage.setItem("edited", editedTodos);
+  }, [editedTodos]);
+
   const deleteTodo = (id) => {
     let newTodo = [...todo].filter((item) => item.id !== id);
     setTodo(newTodo);
+    setDeletedTodos((prev) => +prev + 1);
   };
+  
+  let deleteEditedStatistic = () => {
+   setEditedTodos(0)
+  }
+  let deleteDeletedStatistic = () => {
+  setDeletedTodos(0)
+  }
 
   const editTodo = (id, title) => {
     setEdit(id);
@@ -42,10 +67,15 @@ const ListToDo = ({ todo, setTodo }) => {
     });
     setTodo(newTodo);
     setEdit(null);
+    setEditedTodos((prev) => +prev + 1);
   };
 
   return (
     <div>
+      <P>you deleted {deletedTodos} todos</P>
+      <div><button onClick={deleteDeletedStatistic}>Delete deleted todo statistic</button></div>
+      <P>you edited {editedTodos} todos</P>
+      <div><button onClick={deleteEditedStatistic}>Delete edited todo statistic</button></div>
       {todo.map((item) => (
         <div key={item.id}>
           {edit === item.id ? (
@@ -75,5 +105,6 @@ const ListToDo = ({ todo, setTodo }) => {
     </div>
   );
 };
+
 
 export default ListToDo;
