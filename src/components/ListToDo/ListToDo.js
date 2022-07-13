@@ -1,40 +1,69 @@
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
-const Button = styled.button`
+const ButtonDelete = styled.button`
+  border: none;
+  border-radius: 3px;
+  padding: 3px;
   color: white;
   background-color: red;
+  margin-right: 5px;
 `;
 
+const ButtonEdit = styled.button`
+  padding: 3px;
+  border: none;
+  border-radius: 3px;
+  color: white;
+  background-color: gray;
+`;
+
+
+const Div = styled.div``
+const Layout = styled.div``
+const WrapperTodo = styled.div`
+display: flex;
+justify-content: space-between;
+align-items: center;
+border-radius: 5px;
+background-color: lightgrey;
+margin-bottom: 20px;
+padding: 5px 10px;
+
+`
+
+
 const ButtonSave = styled.button`
+  border: none;
+  border-radius: 3px;
   color: white;
   background-color: green;
   margin-left: 10px;
 `;
 
-const ButtonEdit = styled.button`
-  color: white;
-  background-color: gray;
-`;
 
-const ButtonClearStatisticEditedTodos = styled.button`
 
-`
 
 const P = styled.p``;
 
 const ListToDo = ({ todo, setTodo }) => {
+  
+
   const [edit, setEdit] = useState(null);
 
   const [value, setValue] = useState("");
 
-  const [deletedTodos, setDeletedTodos] = useState(localStorage.getItem("deleted") || 0);
+  const [deletedTodos, setDeletedTodos] = useState(
+    localStorage.getItem("deleted") || 0
+  );
 
   useEffect(() => {
     localStorage.setItem("deleted", deletedTodos);
   }, [deletedTodos]);
 
-  const [editedTodos, setEditedTodos] = useState(localStorage.getItem("edited") || 0);
+  const [editedTodos, setEditedTodos] = useState(
+    localStorage.getItem("edited") || 0
+  );
 
   useEffect(() => {
     localStorage.setItem("edited", editedTodos);
@@ -45,13 +74,13 @@ const ListToDo = ({ todo, setTodo }) => {
     setTodo(newTodo);
     setDeletedTodos((prev) => +prev + 1);
   };
-  
+
   let deleteEditedStatistic = () => {
-   setEditedTodos(0)
-  }
+    setEditedTodos(0);
+  };
   let deleteDeletedStatistic = () => {
-  setDeletedTodos(0)
-  }
+    setDeletedTodos(0);
+  };
 
   const editTodo = (id, title) => {
     setEdit(id);
@@ -71,13 +100,22 @@ const ListToDo = ({ todo, setTodo }) => {
   };
 
   return (
-    <div>
+    <Layout>
       <P>you deleted {deletedTodos} todos</P>
-      <div><button onClick={deleteDeletedStatistic}>Delete deleted todo statistic</button></div>
+      <div>
+        <button onClick={deleteDeletedStatistic}>
+          Delete deleted todo statistic
+        </button>
+      </div>
       <P>you edited {editedTodos} todos</P>
-      <div><button onClick={deleteEditedStatistic}>Delete edited todo statistic</button></div>
+      <div>
+        <button onClick={deleteEditedStatistic}>
+          Delete edited todo statistic
+        </button>
+      </div>
+      
       {todo.map((item) => (
-        <div key={item.id}>
+        <WrapperTodo key={item.id}>
           {edit === item.id ? (
             <div>
               <input value={value} onChange={(e) => setValue(e.target.value)} />
@@ -93,18 +131,17 @@ const ListToDo = ({ todo, setTodo }) => {
               </ButtonSave>
             </div>
           ) : (
-            <div>
-              <Button onClick={() => deleteTodo(item.id)}>Delete</Button>
+            <Div>
+              <ButtonDelete onClick={() => deleteTodo(item.id)}>Delete</ButtonDelete>
               <ButtonEdit onClick={() => editTodo(item.id, item.title)}>
                 Edit
               </ButtonEdit>
-            </div>
+            </Div>
           )}
-        </div>
+        </WrapperTodo>
       ))}
-    </div>
+    </Layout>
   );
 };
-
 
 export default ListToDo;

@@ -5,13 +5,24 @@ const ButtonSave = styled.button`
   color: white;
   background-color: green;
 `;
-
+const Layout = styled.div``
 const clearStatisticSavedTodos = styled.button`
 
 `
 
 const AddToDo = ({ todo, setTodo }) => {
   const [value, setValue] = useState("");
+
+  const [countTodos, setCountTodos] = useState(localStorage.getItem("countTodos") || todo.length);
+
+  useEffect(() => {
+    setCountTodos(todo.length)
+  }, [todo]);
+
+
+  const deleteAllTodos = () => {
+  setTodo([])
+  }
 
 
 
@@ -20,6 +31,8 @@ const AddToDo = ({ todo, setTodo }) => {
  let deleteSavedTodoStatistic = () => {
  setCount(0)
  }
+
+
 
   useEffect(() => {
     localStorage.setItem("count", count);
@@ -41,18 +54,20 @@ const AddToDo = ({ todo, setTodo }) => {
   };
 
   return (
-    <div>
+    <Layout>
       <input
         placeholder="enter todo"
         value={value}
         onChange={(e) => setValue(e.target.value)}
       />
       <ButtonSave onClick={saveTodo}>Save</ButtonSave>
+      <div><button onClick={deleteAllTodos}>delete all todos</button></div>
       
       <p>Statistic:</p>
+      <p>you have {countTodos} todos already</p>
       <p>you created {count} todos </p>
       <div><button onClick={deleteSavedTodoStatistic}>Delete saved todo statistic</button></div>
-    </div>
+    </Layout>
   );
 };
 
