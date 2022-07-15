@@ -1,54 +1,50 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import "../../App.scss";
 
 const ButtonDelete = styled.button`
   border: none;
-  border-radius: 3px;
+  border-radius: 7px;
   padding: 3px;
   color: white;
-  background-color: red;
+  background-color: rgb(255, 69, 0);
   margin-right: 5px;
+`;
+
+const Input = styled.input`
+  width: 350px;
+  border-radius: 5px;
+  border: 1px solid gray;
+`;
+
+const ButtonDeleteStatistic = styled.button`
+  padding: 0px;
+  background: rgb(249, 249, 197);
+  border-radius: 7px;
+  border: 1px solid gray;
+  padding-left: 5px;
+  padding-right: 5px;
 `;
 
 const ButtonEdit = styled.button`
   padding: 3px;
-  border: none;
-  border-radius: 3px;
+  border: 1px solid gray;
+  border-radius: 7px;
   color: white;
   background-color: gray;
 `;
 
-
-const Div = styled.div``
-const Layout = styled.div``
-const WrapperTodo = styled.div`
-display: flex;
-justify-content: space-between;
-align-items: center;
-border-radius: 5px;
-background-color: lightgrey;
-margin-bottom: 20px;
-padding: 5px 10px;
-
-`
-
-
 const ButtonSave = styled.button`
-  border: none;
-  border-radius: 3px;
+  border: 1px solid gray;
+  border-radius: 7px;
   color: white;
-  background-color: green;
+  background-color: rgb(60, 179, 113);
   margin-left: 10px;
 `;
-
-
-
 
 const P = styled.p``;
 
 const ListToDo = ({ todo, setTodo }) => {
-  
-
   const [edit, setEdit] = useState(null);
 
   const [value, setValue] = useState("");
@@ -100,28 +96,36 @@ const ListToDo = ({ todo, setTodo }) => {
   };
 
   return (
-    <Layout>
-      <P>you deleted {deletedTodos} todos</P>
-      <div>
-        <button onClick={deleteDeletedStatistic}>
-          Delete deleted todo statistic
-        </button>
+    <div className="Layout">
+      <div className="StatisticDiv">
+        <div className="StatisticWrapper">
+          <P>you deleted {deletedTodos} todos</P>
+
+          <ButtonDeleteStatistic onClick={deleteDeletedStatistic}>
+            Reset
+          </ButtonDeleteStatistic>
+        </div>
+
+        <div className="StatisticWrapper">
+          <P>you edited {editedTodos} todos</P>
+          <ButtonDeleteStatistic onClick={deleteEditedStatistic}>
+            Reset
+          </ButtonDeleteStatistic>
+        </div>
       </div>
-      <P>you edited {editedTodos} todos</P>
-      <div>
-        <button onClick={deleteEditedStatistic}>
-          Delete edited todo statistic
-        </button>
-      </div>
-      
+
       {todo.map((item) => (
-        <WrapperTodo key={item.id}>
+        <div
+          className="WrapperTodo"
+          style={{ backgroundColor: item.color }}
+          key={item.id}
+        >
           {edit === item.id ? (
             <div>
-              <input value={value} onChange={(e) => setValue(e.target.value)} />
+              <Input value={value} onChange={(e) => setValue(e.target.value)} />
             </div>
           ) : (
-            <div>{item.title}</div>
+            <div className="ItemDiv">{item.title}</div>
           )}
 
           {edit === item.id ? (
@@ -131,16 +135,18 @@ const ListToDo = ({ todo, setTodo }) => {
               </ButtonSave>
             </div>
           ) : (
-            <Div>
-              <ButtonDelete onClick={() => deleteTodo(item.id)}>Delete</ButtonDelete>
+            <div className="DeleteDiv">
+              <ButtonDelete onClick={() => deleteTodo(item.id)}>
+                Delete
+              </ButtonDelete>
               <ButtonEdit onClick={() => editTodo(item.id, item.title)}>
                 Edit
               </ButtonEdit>
-            </Div>
+            </div>
           )}
-        </WrapperTodo>
+        </div>
       ))}
-    </Layout>
+    </div>
   );
 };
 
